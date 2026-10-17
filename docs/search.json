@@ -74,13 +74,13 @@
     "href": "index.html",
     "title": "STAT 386 Tutorial Blog",
     "section": "",
-    "text": "Welcome! This site contains a tutorial for data-science students who want to turn live web data into a tidy dataset."
+    "text": "This website presents one practical tutorial for data-science students: how to turn live web data into a tidy dataset with Python."
   },
   {
-    "objectID": "index.html#featured-tutorial",
-    "href": "index.html#featured-tutorial",
+    "objectID": "index.html#from-api-to-dataframe",
+    "href": "index.html#from-api-to-dataframe",
     "title": "STAT 386 Tutorial Blog",
-    "section": "Featured tutorial",
-    "text": "Featured tutorial\n\nFrom API to DataFrame: Collecting College Football Scores with Python\nLearn how to request college football scoreboard data, navigate nested JSON, and organize the results in a pandas DataFrame.\nRead the tutorial →"
+    "section": "From API to DataFrame",
+    "text": "From API to DataFrame\n\nCollecting College Football Scores with Python\nIn this tutorial, you will learn how to request college football scoreboard data, navigate nested JSON, and organize the results in a pandas DataFrame. It is designed for readers with approximately the data-science background of a STAT 386 student.\nStart the tutorial →"
   }
 ]
