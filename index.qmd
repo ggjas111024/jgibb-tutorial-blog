@@ -1,0 +1,16 @@
+---
+title: "STAT 386 Tutorial Blog"
+subtitle: "A practical guide to collecting API data with Python"
+listing: false
+---
+
+Welcome! This site contains a tutorial for data-science students who want to turn live web data into a tidy dataset.
+
+## Featured tutorial
+
+### [From API to DataFrame: Collecting College Football Scores with Python](api_tutorial_blog.qmd)
+
+Learn how to request college football scoreboard data, navigate nested JSON, and organize the results in a `pandas` DataFrame.
+
+[Read the tutorial →](api_tutorial_blog.qmd){.btn .btn-primary}
+

@@ -1,0 +1,26 @@
+project:
+  type: website
+  output-dir: docs
+  resources:
+    - .nojekyll
+
+website:
+  title: "STAT 386 Tutorial Blog"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: api_tutorial_blog.qmd
+        text: API Tutorial
+    right:
+      - icon: github
+        href: https://github.com/ggjas111024/jgibb-tutorial-blog
+        aria-label: GitHub repository
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+

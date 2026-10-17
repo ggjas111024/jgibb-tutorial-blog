@@ -1,0 +1,86 @@
+[
+  {
+    "objectID": "api_tutorial_blog.html",
+    "href": "api_tutorial_blog.html",
+    "title": "From API to DataFrame: Collecting College Football Scores with Python",
+    "section": "",
+    "text": "Data scientists often work with information that is constantly changing. Sports scores, weather observations, stock prices, and social-media statistics are examples of data that would be inconvenient to download manually every time they change. One common solution is to use an API, or Application Programming Interface.\nAn API lets one program request information from another service in a structured format. In this tutorial, we will use an ESPN college football scoreboard endpoint to collect game data with Python. We will then turn the returned JSON into a clean pandas DataFrame.\nBy the end of this tutorial, you will be able to:\n\nsend a request to an API with Python;\ninspect a JSON response;\nnavigate nested JSON objects;\nextract useful information from each game; and\norganize the results into a DataFrame.\n\nThe endpoint we will use is:\nhttps://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard\nThis endpoint returns scoreboard information for college football games, including team names, scores, game status, rankings, records, and other details.\n\nNote: This tutorial uses an ESPN site endpoint that is accessible without an API key. Because it is not presented as a formally documented public developer API, its structure could change in the future."
+  },
+  {
+    "objectID": "api_tutorial_blog.html#introduction",
+    "href": "api_tutorial_blog.html#introduction",
+    "title": "From API to DataFrame: Collecting College Football Scores with Python",
+    "section": "",
+    "text": "Data scientists often work with information that is constantly changing. Sports scores, weather observations, stock prices, and social-media statistics are examples of data that would be inconvenient to download manually every time they change. One common solution is to use an API, or Application Programming Interface.\nAn API lets one program request information from another service in a structured format. In this tutorial, we will use an ESPN college football scoreboard endpoint to collect game data with Python. We will then turn the returned JSON into a clean pandas DataFrame.\nBy the end of this tutorial, you will be able to:\n\nsend a request to an API with Python;\ninspect a JSON response;\nnavigate nested JSON objects;\nextract useful information from each game; and\norganize the results into a DataFrame.\n\nThe endpoint we will use is:\nhttps://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard\nThis endpoint returns scoreboard information for college football games, including team names, scores, game status, rankings, records, and other details.\n\nNote: This tutorial uses an ESPN site endpoint that is accessible without an API key. Because it is not presented as a formally documented public developer API, its structure could change in the future."
+  },
+  {
+    "objectID": "api_tutorial_blog.html#step-1-request-the-data",
+    "href": "api_tutorial_blog.html#step-1-request-the-data",
+    "title": "From API to DataFrame: Collecting College Football Scores with Python",
+    "section": "Step 1: Request the data",
+    "text": "Step 1: Request the data\nPython’s requests library makes it easy to retrieve information from a URL.\n\nimport requests\nimport pandas as pd\n\nurl = \"https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard\"\n\nresponse = requests.get(url, timeout=10)\nresponse.raise_for_status()\n\nrequests.get() sends an HTTP GET request to the URL. The result is stored in response.\nThe raise_for_status() line is useful because it raises an error if the request fails. For example, a 404 response means a resource was not found, while a 500-level response usually means something went wrong on the server.\nWe can check the response code directly:\n\nresponse.status_code\n\nA successful request normally returns:\n200"
+  },
+  {
+    "objectID": "api_tutorial_blog.html#step-2-convert-the-response-to-json",
+    "href": "api_tutorial_blog.html#step-2-convert-the-response-to-json",
+    "title": "From API to DataFrame: Collecting College Football Scores with Python",
+    "section": "Step 2: Convert the response to JSON",
+    "text": "Step 2: Convert the response to JSON\nAPI responses are commonly returned as JSON. JSON stores information using structures similar to Python dictionaries and lists.\nWe can convert the response into Python objects with .json():\n\ndata = response.json()\n\nThe top level contains several keys. Instead of printing the entire response, which is very large, we can inspect just the key names:\n\ndata.keys()\n\nOne of the most important keys is events. Each item in events represents a college football game.\n\ngames = data[\"events\"]\n\nprint(\"Number of games:\", len(games))\n\nWe can inspect the name of the first game:\n\ngames[0][\"name\"]\n\nThis is our first example of navigating JSON. games[0] selects the first game, and [\"name\"] selects its name."
+  },
+  {
+    "objectID": "api_tutorial_blog.html#step-3-navigate-the-nested-game-data",
+    "href": "api_tutorial_blog.html#step-3-navigate-the-nested-game-data",
+    "title": "From API to DataFrame: Collecting College Football Scores with Python",
+    "section": "Step 3: Navigate the nested game data",
+    "text": "Step 3: Navigate the nested game data\nReal API data is often more complicated than a flat spreadsheet. Information may be nested several levels deep.\nFor each ESPN event, matchup information is stored inside competitions. The teams are then stored inside competitors.\n\ngame = games[0]\n\ncompetition = game[\"competitions\"][0]\nteams = competition[\"competitors\"]\n\nEach competitor contains a homeAway value that identifies whether the team is playing at home or away.\nWe can inspect a few useful fields:\n\nfor team in teams:\n    print(\n        team[\"team\"][\"displayName\"],\n        team[\"homeAway\"],\n        team[\"score\"]\n    )\n\nConceptually, the structure looks like this:\n\n\n\nJSON field\nMeaning\n\n\n\n\nteam[\"team\"][\"displayName\"]\nTeam name\n\n\nteam[\"homeAway\"]\nWhether the team is home or away\n\n\nteam[\"score\"]\nCurrent or final score\n\n\ngame[\"date\"]\nScheduled game date and time\n\n\ncompetition[\"status\"][\"type\"][\"description\"]\nGame status\n\n\n\nUnderstanding this nested structure is one of the most important skills when working with APIs. Before building a DataFrame, you need to determine where the values you care about are located."
+  },
+  {
+    "objectID": "api_tutorial_blog.html#step-4-extract-one-row-per-game",
+    "href": "api_tutorial_blog.html#step-4-extract-one-row-per-game",
+    "title": "From API to DataFrame: Collecting College Football Scores with Python",
+    "section": "Step 4: Extract one row per game",
+    "text": "Step 4: Extract one row per game\nOur goal is to create a tidy dataset where each row represents one football game.\nBecause the order of the teams in the JSON should not be treated as meaning “home first” or “away first,” we can use homeAway to identify them explicitly.\n\ngame_data = []\n\nfor game in games:\n    competition = game[\"competitions\"][0]\n    competitors = competition[\"competitors\"]\n\n    home = next(\n        team for team in competitors\n        if team[\"homeAway\"] == \"home\"\n    )\n\n    away = next(\n        team for team in competitors\n        if team[\"homeAway\"] == \"away\"\n    )\n\n    game_data.append({\n        \"date\": game[\"date\"],\n        \"away_team\": away[\"team\"][\"displayName\"],\n        \"home_team\": home[\"team\"][\"displayName\"],\n        \"away_score\": int(away[\"score\"]),\n        \"home_score\": int(home[\"score\"]),\n        \"status\": competition[\"status\"][\"type\"][\"description\"]\n    })\n\nThere are two important ideas here.\nFirst, next() searches through the competitors until it finds the home or away team. This is safer than assuming a particular list position.\nSecond, the API stores scores as text, so int() converts values such as \"31\" into the integer 31. Numeric values are easier to analyze later."
+  },
+  {
+    "objectID": "api_tutorial_blog.html#step-5-create-a-pandas-dataframe",
+    "href": "api_tutorial_blog.html#step-5-create-a-pandas-dataframe",
+    "title": "From API to DataFrame: Collecting College Football Scores with Python",
+    "section": "Step 5: Create a pandas DataFrame",
+    "text": "Step 5: Create a pandas DataFrame\nNow that game_data is a list of dictionaries, converting it into a DataFrame takes only one line:\n\ndf = pd.DataFrame(game_data)\n\ndf.head()\n\nThe result has a structure similar to this:\n\n\n\n\n\n\n\n\n\n\n\ndate\naway_team\nhome_team\naway_score\nhome_score\nstatus\n\n\n\n\n2026-10-17…\nOhio State Buckeyes\nIndiana Hoosiers\n0\n0\nScheduled\n\n\n…\n…\n…\n…\n…\n…\n\n\n\nThe exact games and scores will change depending on when the code is run. That is one of the advantages of using an API: the program retrieves the available data at request time instead of relying on a manually saved table.\nWe can also convert the date column into a real pandas datetime:\n\ndf[\"date\"] = pd.to_datetime(df[\"date\"])\n\ndf.head()"
+  },
+  {
+    "objectID": "api_tutorial_blog.html#step-6-do-something-with-the-data",
+    "href": "api_tutorial_blog.html#step-6-do-something-with-the-data",
+    "title": "From API to DataFrame: Collecting College Football Scores with Python",
+    "section": "Step 6: Do something with the data",
+    "text": "Step 6: Do something with the data\nCollecting data is only the beginning. Once the API response has been converted into a DataFrame, normal pandas operations become available.\nFor example, suppose we only want completed games:\n\nfinal_games = df[df[\"status\"].str.contains(\"Final\", case=False, na=False)]\n\nfinal_games.head()\n\nFor completed games, we could calculate the margin between the home and away scores:\n\nfinal_games = final_games.copy()\n\nfinal_games[\"home_margin\"] = (\n    final_games[\"home_score\"] - final_games[\"away_score\"]\n)\n\nfinal_games[\n    [\"away_team\", \"home_team\", \"away_score\", \"home_score\", \"home_margin\"]\n].head()\n\nA positive home_margin means the home team won, while a negative value means the away team won.\nThis simple example shows why APIs are useful in data science. We started with information designed for a website, extracted only the fields relevant to our question, and transformed them into a dataset ready for analysis."
+  },
+  {
+    "objectID": "api_tutorial_blog.html#what-to-remember",
+    "href": "api_tutorial_blog.html#what-to-remember",
+    "title": "From API to DataFrame: Collecting College Football Scores with Python",
+    "section": "What to remember",
+    "text": "What to remember\nThe basic API workflow used in this tutorial applies far beyond college football:\n\nSend a request to an endpoint.\nCheck that the request succeeded.\nConvert the response from JSON.\nInspect the JSON structure.\nExtract the variables you need.\nCreate a DataFrame.\nAnalyze or visualize the results.\n\nThe most challenging part is often not sending the request. It is understanding the nested JSON structure and deciding how to transform it into tidy data."
+  },
+  {
+    "objectID": "api_tutorial_blog.html#conclusion",
+    "href": "api_tutorial_blog.html#conclusion",
+    "title": "From API to DataFrame: Collecting College Football Scores with Python",
+    "section": "Conclusion",
+    "text": "Conclusion\nAPIs give data scientists a way to collect information directly from online services instead of manually copying values into a spreadsheet. In this tutorial, we used Python to request college football scoreboard data, navigate nested JSON, identify the home and away teams, and create a pandas DataFrame containing team names, scores, dates, and game status.\nThe same pattern can be adapted to many other types of data.\nTry it yourself: modify the code to collect one additional variable from the ESPN response. For example, add each team’s record, ranking, venue, or broadcast network to the DataFrame. Then use that new variable to answer a question about the games."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "STAT 386 Tutorial Blog",
+    "section": "",
+    "text": "Welcome! This site contains a tutorial for data-science students who want to turn live web data into a tidy dataset."
+  },
+  {
+    "objectID": "index.html#featured-tutorial",
+    "href": "index.html#featured-tutorial",
+    "title": "STAT 386 Tutorial Blog",
+    "section": "Featured tutorial",
+    "text": "Featured tutorial\n\nFrom API to DataFrame: Collecting College Football Scores with Python\nLearn how to request college football scoreboard data, navigate nested JSON, and organize the results in a pandas DataFrame.\nRead the tutorial →"
+  }
+]
