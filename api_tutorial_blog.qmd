@@ -1,6 +1,6 @@
 ---
 title: "From API to DataFrame: Collecting College Football Scores with Python"
-author: "Aida Rose"
+author: "Jack Gibb"
 date: "2026-10-16"
 format:
   html:

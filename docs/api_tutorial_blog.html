@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Aida Rose">
+<meta name="author" content="Jack Gibb">
 <meta name="dcterms.date" content="2026-10-16">
 
 <title>From API to DataFrame: Collecting College Football Scores with Python – STAT 386 Tutorial Blog</title>
@@ -189,7 +189,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Aida Rose </p>
+             <p>Jack Gibb </p>
           </div>
   </div>
     
@@ -230,7 +230,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-1-request-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="step-1-request-the-data">Step 1: Request the data</h2>
 <p>Python’s <code>requests</code> library makes it easy to retrieve information from a URL.</p>
-<div id="b721b290" class="cell">
+<div id="2e499ade" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -242,7 +242,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>requests.get()</code> sends an HTTP GET request to the URL. The result is stored in <code>response</code>.</p>
 <p>The <code>raise_for_status()</code> line is useful because it raises an error if the request fails. For example, a <code>404</code> response means a resource was not found, while a <code>500</code>-level response usually means something went wrong on the server.</p>
 <p>We can check the response code directly:</p>
-<div id="1aa0aee3" class="cell">
+<div id="74a8031b" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>response.status_code</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A successful request normally returns:</p>
@@ -252,21 +252,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="step-2-convert-the-response-to-json">Step 2: Convert the response to JSON</h2>
 <p>API responses are commonly returned as <strong>JSON</strong>. JSON stores information using structures similar to Python dictionaries and lists.</p>
 <p>We can convert the response into Python objects with <code>.json()</code>:</p>
-<div id="7f6a4869" class="cell">
+<div id="591b6325" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> response.json()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The top level contains several keys. Instead of printing the entire response, which is very large, we can inspect just the key names:</p>
-<div id="c69289c7" class="cell">
+<div id="e67c6aaf" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data.keys()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>One of the most important keys is <code>events</code>. Each item in <code>events</code> represents a college football game.</p>
-<div id="0e41400f" class="cell">
+<div id="35b7368e" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>games <span class="op">=</span> data[<span class="st">"events"</span>]</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of games:"</span>, <span class="bu">len</span>(games))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can inspect the name of the first game:</p>
-<div id="cfe94058" class="cell">
+<div id="71526c3c" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>games[<span class="dv">0</span>][<span class="st">"name"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This is our first example of navigating JSON. <code>games[0]</code> selects the first game, and <code>["name"]</code> selects its name.</p>
@@ -275,7 +275,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="step-3-navigate-the-nested-game-data">Step 3: Navigate the nested game data</h2>
 <p>Real API data is often more complicated than a flat spreadsheet. Information may be nested several levels deep.</p>
 <p>For each ESPN event, matchup information is stored inside <code>competitions</code>. The teams are then stored inside <code>competitors</code>.</p>
-<div id="98bb6a37" class="cell">
+<div id="f7aa71ef" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>game <span class="op">=</span> games[<span class="dv">0</span>]</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>competition <span class="op">=</span> game[<span class="st">"competitions"</span>][<span class="dv">0</span>]</span>
@@ -283,7 +283,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Each competitor contains a <code>homeAway</code> value that identifies whether the team is playing at home or away.</p>
 <p>We can inspect a few useful fields:</p>
-<div id="717f85a3" class="cell">
+<div id="b2fb54e1" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> team <span class="kw">in</span> teams:</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        team[<span class="st">"team"</span>][<span class="st">"displayName"</span>],</span>
@@ -328,7 +328,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="step-4-extract-one-row-per-game">Step 4: Extract one row per game</h2>
 <p>Our goal is to create a tidy dataset where each row represents one football game.</p>
 <p>Because the order of the teams in the JSON should not be treated as meaning “home first” or “away first,” we can use <code>homeAway</code> to identify them explicitly.</p>
-<div id="f8fccb12" class="cell">
+<div id="4064b13f" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>game_data <span class="op">=</span> []</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> game <span class="kw">in</span> games:</span>
@@ -361,7 +361,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-5-create-a-pandas-dataframe" class="level2">
 <h2 class="anchored" data-anchor-id="step-5-create-a-pandas-dataframe">Step 5: Create a pandas DataFrame</h2>
 <p>Now that <code>game_data</code> is a list of dictionaries, converting it into a DataFrame takes only one line:</p>
-<div id="66522782" class="cell">
+<div id="1b73bd13" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(game_data)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -407,7 +407,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>The exact games and scores will change depending on when the code is run. That is one of the advantages of using an API: the program retrieves the available data at request time instead of relying on a manually saved table.</p>
 <p>We can also convert the date column into a real pandas datetime:</p>
-<div id="f9ea3860" class="cell">
+<div id="7cee6332" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>])</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -417,13 +417,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="step-6-do-something-with-the-data">Step 6: Do something with the data</h2>
 <p>Collecting data is only the beginning. Once the API response has been converted into a DataFrame, normal pandas operations become available.</p>
 <p>For example, suppose we only want completed games:</p>
-<div id="58b6f1de" class="cell">
+<div id="9b2cc87b" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>final_games <span class="op">=</span> df[df[<span class="st">"status"</span>].<span class="bu">str</span>.contains(<span class="st">"Final"</span>, case<span class="op">=</span><span class="va">False</span>, na<span class="op">=</span><span class="va">False</span>)]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>final_games.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>For completed games, we could calculate the margin between the home and away scores:</p>
-<div id="e35e709a" class="cell">
+<div id="1f616777" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>final_games <span class="op">=</span> final_games.copy()</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>final_games[<span class="st">"home_margin"</span>] <span class="op">=</span> (</span>
