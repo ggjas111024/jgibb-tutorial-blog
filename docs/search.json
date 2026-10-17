@@ -81,6 +81,6 @@
     "href": "index.html#from-api-to-dataframe",
     "title": "STAT 386 Tutorial Blog",
     "section": "From API to DataFrame",
-    "text": "From API to DataFrame\n\nCollecting College Football Scores with Python\nIn this tutorial, you will learn how to request college football scoreboard data, navigate nested JSON, and organize the results in a pandas DataFrame. It is designed for readers with approximately the data-science background of a STAT 386 student.\nStart the tutorial →"
+    "text": "From API to DataFrame\n\nCollecting College Football Scores with Python\nIn this tutorial, you will learn how to request college football scoreboard data, navigate nested JSON, and organize the results in a pandas DataFrame.\nStart the tutorial →"
   }
 ]

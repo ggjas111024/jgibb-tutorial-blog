@@ -10,6 +10,6 @@ This website presents an API tutorial.
 
 ### Collecting College Football Scores with Python
 
-In this tutorial, you will learn how to request college football scoreboard data, navigate nested JSON, and organize the results in a `pandas` DataFrame. It is designed for readers with approximately the data-science background of a STAT 386 student.
+In this tutorial, you will learn how to request college football scoreboard data, navigate nested JSON, and organize the results in a `pandas` DataFrame.
 
 [Start the tutorial →](api_tutorial_blog.qmd){.btn .btn-primary}
