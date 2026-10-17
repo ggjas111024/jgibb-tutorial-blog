@@ -4,7 +4,7 @@ subtitle: "Collecting API data with Python"
 listing: false
 ---
 
-This website presents one practical tutorial for data-science students: how to turn live web data into a tidy dataset with Python.
+This website presents an API tutorial.
 
 ## From API to DataFrame
 

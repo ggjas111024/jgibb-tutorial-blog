@@ -74,7 +74,7 @@
     "href": "index.html",
     "title": "STAT 386 Tutorial Blog",
     "section": "",
-    "text": "This website presents one practical tutorial for data-science students: how to turn live web data into a tidy dataset with Python."
+    "text": "This website presents an API tutorial."
   },
   {
     "objectID": "index.html#from-api-to-dataframe",
