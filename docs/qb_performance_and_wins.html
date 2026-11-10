@@ -216,16 +216,16 @@ window.Quarto = {
 
 <section id="why-compare-quarterbacks-and-wins" class="level2">
 <h2 class="anchored" data-anchor-id="why-compare-quarterbacks-and-wins">Why compare quarterbacks and wins?</h2>
-<p>Quarterbacks get a lot of credit when their teams win and a lot of blame when they lose. Passing totals do not always tell the same story, though. A quarterback can pile up yards in a good offense, but he can also pile up yards because his team is behind and has to throw on nearly every play.</p>
+<p>Quarterbacks get a lot of credit when their teams win and a lot of blame when they lose. Passing totals do not always tell the same story. A quarterback can pile up yards in a good offense, but he can also pile up yards because his team is behind and has to throw on nearly every play.</p>
 <p>I wanted to know how strongly quarterback passing performance is associated with team success in FBS college football. I compared each team’s primary passer with the team’s winning percentage over three seasons. The results suggest that how well a quarterback uses his attempts matters much more than how often he throws.</p>
 </section>
 <section id="how-i-collected-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="how-i-collected-the-data">How I collected the data</h2>
 <p>I collected the data from the authenticated <a href="https://collegefootballdata.com/">CollegeFootballData API</a> instead of scraping webpages. The API key was stored in a local <code>.env</code> file that Git ignored. The script loaded the key and sent it in the Bearer authorization header, so the credential never appeared in the code, request URLs, or public repository.</p>
-<p>The collection process was repeated for 2023, 2024, and 2025. First, the script requested that season’s FBS membership from <code>/teams/fbs</code>. Using a separate list for each year mattered because FBS membership changed during this period. Next, it requested completed regular-season games from <code>/games</code>. Games had to involve an FBS program and have a final score. Conference championship games were identified from the game notes and removed. Games with playoff metadata were also removed, which kept bowls and College Football Playoff games out of the sample. The script was set to stop if it found a tie rather than deciding how to count it after the fact.</p>
+<p>The collection process was repeated for 2023, 2024, and 2025. First, the script requested that season’s FBS membership from <code>/teams/fbs</code>. Using a separate list for each year mattered because FBS membership changed during this period. Next, it requested completed regular season games from <code>/games</code>. Games had to involve an FBS program and have a final score. Conference championship games were identified from the game notes and removed. Games with playoff metadata were also removed, which kept bowls and College Football Playoff games out of the sample. The script was set to stop if it found a tie rather than deciding how to count it after the fact.</p>
 <p>Player statistics came from <code>/games/players</code>, requested one week at a time. For each included game, I kept completions, attempts, passing yards, touchdowns, and interceptions. I did not use sacks. CFBD game and team identifiers connected each box score to the correct game result.</p>
-<p>Once the game-level data were collected, the script added each passer’s statistics within a team and season. The player with the most attempts became that team’s primary quarterback. He also needed a passing box-score entry in at least 10 included games. Wins and losses came from those same games, so the passing statistics and team record covered the same part of the season.</p>
-<p>All rates were calculated from the collected totals rather than copied from the API. That includes completion percentage, yards per attempt, touchdown and interception rates, per-game measures, winning percentage, and NCAA passer efficiency. Using <span class="math inline">\(Y\)</span> for yards, <span class="math inline">\(TD\)</span> for touchdowns, <span class="math inline">\(C\)</span> for completions, <span class="math inline">\(INT\)</span> for interceptions, and <span class="math inline">\(A\)</span> for attempts, the rating is</p>
+<p>Once the game level data were collected, the script added each passer’s statistics within a team and season. The player with the most attempts became that team’s primary quarterback. He also needed a passing box score entry in at least 10 included games. Wins and losses came from those same games, so the passing statistics and team record covered the same part of the season.</p>
+<p>All rates were calculated from the collected totals rather than copied from the API. That includes completion percentage, yards per attempt, touchdown and interception rates, per game measures, winning percentage, and NCAA passer efficiency. Using <span class="math inline">\(Y\)</span> for yards, <span class="math inline">\(TD\)</span> for touchdowns, <span class="math inline">\(C\)</span> for completions, <span class="math inline">\(INT\)</span> for interceptions, and <span class="math inline">\(A\)</span> for attempts, the rating is</p>
 <p><span class="math display">\[
 \text{Rating} = \frac{8.4Y + 330TD + 100C - 200INT}{A}.
 \]</span></p>
@@ -233,19 +233,19 @@ window.Quarto = {
 </section>
 <section id="the-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="the-dataset">The dataset</h2>
-<p>The final dataset has 312 quarterback team-seasons: 98 from 2023, 107 from 2024, and 107 from 2025. It includes 219 quarterbacks and 136 teams. There are no missing values. The 10-game rule removed 91 team-seasons, and the game filters removed 28 conference championships. The final data contain no ties or sack fields.</p>
+<p>The final dataset has 312 quarterback team seasons: 98 from 2023, 107 from 2024, and 107 from 2025. It includes 219 quarterbacks and 136 teams. There are no missing values. The 10 game rule removed 91 team seasons, and the game filters removed 28 conference championships. The final data contain no ties or sack fields.</p>
 <p>The average quarterback completed 62.76% of his passes and gained 7.65 yards per attempt. The average touchdown rate was 5.44%, the average interception rate was 2.40%, and the average NCAA passer rating was 140.15. Teams won 56.89% of their included games on average.</p>
 </section>
 <section id="efficiency-had-the-strongest-relationship" class="level2">
 <h2 class="anchored" data-anchor-id="efficiency-had-the-strongest-relationship">Efficiency had the strongest relationship</h2>
 <p>NCAA passer rating had the largest correlation with winning percentage, with Pearson’s <span class="math inline">\(r = 0.6695\)</span>. Higher ratings usually went with better records, although the points are spread widely enough to show plenty of exceptions.</p>
-<div id="fig-rating" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Scatterplot of NCAA passer rating against team winning percentage for 312 quarterback team-seasons. Points trend upward around a fitted regression line; Pearson r equals 0.67.">
+<div id="fig-rating" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Scatterplot of NCAA passer rating against team winning percentage for 312 quarterback team seasons. Points trend upward around a fitted regression line; Pearson r equals 0.67.">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-rating-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/qb-performance/passer_rating_vs_win_pct.png" class="img-fluid figure-img" alt="Scatterplot of NCAA passer rating against team winning percentage for 312 quarterback team-seasons. Points trend upward around a fitted regression line; Pearson r equals 0.67.">
+<img src="images/qb-performance/passer_rating_vs_win_pct.png" class="img-fluid figure-img" alt="Scatterplot of NCAA passer rating against team winning percentage for 312 quarterback team seasons. Points trend upward around a fitted regression line; Pearson r equals 0.67.">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rating-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Each point is a quarterback team-season. Higher NCAA passer ratings generally align with higher team winning percentages; the fitted line summarizes the positive association.
+Figure&nbsp;1: Each point is a quarterback team season. Higher NCAA passer ratings generally align with higher team winning percentages; the fitted line summarizes the positive association.
 </figcaption>
 </figure>
 </div>
@@ -314,7 +314,7 @@ Figure&nbsp;3: The heatmap shows that passer rating, yards per attempt, and touc
 <section id="what-the-correlations-cannot-show" class="level2">
 <h2 class="anchored" data-anchor-id="what-the-correlations-cannot-show">What the correlations cannot show</h2>
 <p>This analysis does not prove that efficient quarterback play causes teams to win. Defense, schedule strength, coaching, injuries, offensive scheme, and game situation can affect both passing numbers and team records. A good running game can create easier passing opportunities. A poor defense can force an offense to throw from behind.</p>
-<p>The 10-game cutoff also leaves out some injury-heavy seasons and quarterback rotations. Choosing one primary quarterback makes team-seasons easier to compare, but it does not describe every team’s situation perfectly.</p>
+<p>The 10 game cutoff also leaves out some injury heavy seasons and quarterback rotations. Choosing one primary quarterback makes team seasons easier to compare, but it does not describe every team’s situation perfectly.</p>
 <p>Over these three seasons, teams with efficient primary quarterbacks generally won more often. Passer rating and yards per attempt had the clearest relationships with winning, while attempts per game had almost none. A useful next step would be to include schedule strength, defense, and game situation and see how much of the relationship remains.</p>
 </section>
 <section id="further-resources" class="level2">
@@ -322,7 +322,7 @@ Figure&nbsp;3: The heatmap shows that passer rating, yards per attempt, and touc
 <ul>
 <li><a href="https://collegefootballdata.com/">CollegeFootballData</a> provides API access and current usage information.</li>
 <li>The <a href="https://github.com/ggjas111024/jgibb-cfb-qb-data">project repository</a> contains the collection code, validation rules, data, and analysis.</li>
-<li>The <a href="https://pandas.pydata.org/docs/user_guide/groupby.html">pandas GroupBy guide</a> explains the grouping operations used to build team-season totals.</li>
+<li>The <a href="https://pandas.pydata.org/docs/user_guide/groupby.html">pandas GroupBy guide</a> explains the grouping operations used to build team season totals.</li>
 </ul>
 
 
