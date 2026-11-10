@@ -1,15 +1,13 @@
 ---
-title: "STAT 386 Tutorial Blog"
-subtitle: "Collecting API data with Python"
-listing: false
+title: "STAT 386 Statistics Blog"
+subtitle: "Data collection, analysis, and college football"
+listing:
+  contents:
+    - qb_performance_and_wins.qmd
+    - api_tutorial_blog.qmd
+  sort: "date desc"
+  type: default
+  categories: true
 ---
 
-This website presents an API tutorial.
-
-## From API to DataFrame
-
-### Collecting College Football Scores with Python
-
-In this tutorial, you will learn how to request college football scoreboard data, navigate nested JSON, and organize the results in a `pandas` DataFrame.
-
-[Start the tutorial →](api_tutorial_blog.qmd){.btn .btn-primary}
+This site features data-science writing for students with a STAT 386 background.

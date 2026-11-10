@@ -5,11 +5,13 @@ project:
     - .nojekyll
 
 website:
-  title: "STAT 386 Tutorial Blog"
+  title: "STAT 386 Statistics Blog"
   navbar:
     left:
       - href: index.qmd
         text: Home
+      - href: qb_performance_and_wins.qmd
+        text: QB Analysis
       - href: api_tutorial_blog.qmd
         text: API Tutorial
     right:
